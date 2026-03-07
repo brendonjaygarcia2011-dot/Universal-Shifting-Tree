@@ -63,4 +63,12 @@ addLayer("A", {
 
         },
     },
+    infoboxes: {
+    lore: {
+        title: "Hello there",
+        body() { return "Hi! This is my upgrade tree that i'm finally making, the only reason is because i'm a nerd and want to play and make things. Anyways, i beat the Prestige Tree today, and in science, the unit is Atoms and other things, so yea." },
+        etc
+    },
+    etc
+    }
 })
