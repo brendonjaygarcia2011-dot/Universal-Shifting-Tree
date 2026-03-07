@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "v0.01",
+	num: "0.01",
 	name: "The atoms align.",
 }
 
@@ -43,6 +43,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('A', 11)) gain = gain.times(2)
+	if (hasUpgrade('A', 12)) gain = gain.times(3)
+	if (hasUpgrade('A', 13)) gain = gain.times(upgradeEffect('A', 13))
+	if (hasUpgrade('A', 14)) gain = gain.times(upgradeEffect('A', 14))
 	return gain
 }
 

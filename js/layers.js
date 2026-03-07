@@ -24,5 +24,43 @@ addLayer("A", {
     hotkeys: [
         {key: "a", description: "A: Reset for Atoms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return true
+
+    },
+    upgrades: {
+         11: {
+            title: "I don't think atoms can dissapear...",
+            description: "Double your Subatomic Particle gain.",
+            cost: new Decimal(1),
+        },
+         12: {
+            title: "If this was real it would have exploded.",
+            description: "Triple your Subatomic Particle gain.",
+            cost: new Decimal(2),
+        },
+         13: {
+            title: "The atoms split to make more particles.",
+            description: "Atoms boost Subatomic Particles.",
+            cost: new Decimal(5),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+         14: {
+            title: "Antimatter dimensions but matter?",
+            description: "Subatomic Particles boost themselves (somehow???).",
+            cost: new Decimal(15),
+            effect() {
+                return player.points.add(1).pow(0.1)
+            },
+            gainMult() {
+                let mult = new Decimal(1)
+                if (hasUpgrade('A', 14)) mult = mult.times(upgradeEffect('A', 14))
+                return mult
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+
+        },
+    },
 })
