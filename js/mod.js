@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "The Universal Shifting Tree",
 	author: "Elitheli",
-	pointsName: "Atoms",
+	pointsName: "Subatomic Particles",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -19,7 +19,7 @@ let VERSION = {
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.01: The atoms align.</h3><br>
 	<h4>3/6/26</h4>
-		- Added Atoms<br>
+		- Added Subatomic Particles.<br>
 		- MY BRAIN IS ALREADY DEAD.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
