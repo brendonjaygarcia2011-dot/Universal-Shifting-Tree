@@ -1,3 +1,5 @@
+
+
 addLayer("SA", {
     name: "Subatomic Particles", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "SA", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -6,7 +8,7 @@ addLayer("SA", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#FF0000",
+    color: "#8F0000",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "Subatomic Particles", // Name of prestige currency
     baseResource: "Quarks", // Name of resource prestige is based on
@@ -76,3 +78,34 @@ addLayer("SA", {
     },
     }
 })
+
+addLayer("A", {
+    name: "Atoms", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+    }},
+    branches: ["SA"],
+    color: "#FF0000",
+    requires: new Decimal(100), // Can be a function that takes requirement increases into account
+    resource: "Atoms", // Name of prestige currency
+    baseResource: "Subatomic Particles", // Name of resource prestige is based on
+    baseAmount() {return player.SA.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.33, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "a", description: "A: Reset for Atoms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true
+
+    }})
