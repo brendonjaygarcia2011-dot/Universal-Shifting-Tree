@@ -12,19 +12,24 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.02",
-	name: "nvm the quarks align",
+	num: "0.1",
+	name: "UNIVERSAL COLLAPSE",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.01: The atoms align.</h3><br>
-	<h4>3/6/26</h4>
-		- Added Subatomic Particles.<br>
-		- MY BRAIN IS ALREADY DEAD.<br><br>
+	<h2>v0.1: UNIVERSAL COLLAPSE</h3><br>
+	<h4>3/10/26</h4>
+		- Implemented Universal Shift<br>
+		- Locked atoms until 100 Subatomic Particles<br>
+		- OH MY GOSH THIS WAS SO HARD TO IMPLEMENT<br><br>
 	<h3>v0.02: nvm the quarks align</h3><br>
 	<h4>3/7/26</h4>
 		- Changed Subatomic Particles to Quarks (i'll add explanations later)<br>
-		- Changed Atoms to Subatomic Particles (reasonable)`
+		- Changed Atoms to Subatomic Particles (reasonable)<br><br>
+	<h3>v0.01: The atoms align.</h3><br>
+	<h4>3/6/26</h4>
+		- Added Subatomic Particles.<br>
+		- MY BRAIN IS ALREADY DEAD.`
 
 let winText = `This game is very short sowwy :( Anyways, good job you beat my game.`
 

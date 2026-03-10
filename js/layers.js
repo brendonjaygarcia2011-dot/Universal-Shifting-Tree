@@ -1,4 +1,50 @@
 
+addLayer("US", {
+    name: "Universal Shifts", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "US", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0)
+    }},
+    color: "#AA66AA",
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    resource: "Universal Shifts", // Name of prestige currency
+    baseResource: "Quarks", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "u", description: "U: Reset for Universal Shift", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    onPrestige(gain) {
+    // This wipes the higher layers when you prestige US
+    if (player.SA) layerDataReset("SA");
+    if (player.A) layerDataReset("A");
+    
+    // This resets the main points at the very top
+    setTimeout(() => {
+        player.points = new Decimal(10);
+    }, 0)
+    },
+    doReset(resettingLayer) {
+    // This PREVENTS US from resetting when SA or A resets
+    let keep = ["points", "upgrades", "milestones", "buyables"];
+    if (layers[resettingLayer].row > this.row) {
+        layerDataReset(this.layer, keep);
+    }
+    },
+    layerShown(){return true
+    }
+})
 
 addLayer("SA", {
     name: "Subatomic Particles", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -8,6 +54,7 @@ addLayer("SA", {
         unlocked: true,
 		points: new Decimal(0),
     }},
+    branches: ["US"],
     color: "#8F0000",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "Subatomic Particles", // Name of prestige currency
@@ -23,7 +70,13 @@ addLayer("SA", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
+    onPrestige(gain) {
+    // Wait for the engine to finish, then strike it down to 0
+    setTimeout(() => {
+        player.points = new Decimal(0);
+    }, 0);
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "s", description: "S: Reset for Subatomic Particles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -84,7 +137,7 @@ addLayer("A", {
     symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     branches: ["SA"],
@@ -102,10 +155,10 @@ addLayer("A", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 1, // Row the layer is in on the tree (0 is the first row)
+    row: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "a", description: "A: Reset for Atoms", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true
 
-    }})
+}})
