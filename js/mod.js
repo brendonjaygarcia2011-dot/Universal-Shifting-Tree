@@ -20,12 +20,16 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h2>v0.1: UNIVERSAL COLLAPSE</h3><br>
 	<h4>3/10/26</h4>
 		- Implemented Universal Shift<br>
-		- Locked atoms until 100 Subatomic Particles<br>
+		- Locked atoms until 100 Subatomic Particles (sowwy)<br>
+		- Reversed the changelog so the most recent updates are shown at the top<br>
 		- OH MY GOSH THIS WAS SO HARD TO IMPLEMENT<br><br>
 	<h3>v0.02: nvm the quarks align</h3><br>
 	<h4>3/7/26</h4>
 		- Changed Subatomic Particles to Quarks (i'll add explanations later)<br>
 		- Changed Atoms to Subatomic Particles (reasonable)<br><br>
+	<h3>v0.01.1</h3><br>
+	<h4>3/7/26</h4>
+		- Added Atoms<br><br>
 	<h3>v0.01: The atoms align.</h3><br>
 	<h4>3/6/26</h4>
 		- Added Subatomic Particles.<br>
@@ -69,7 +73,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("1000"))
+	return player.points.gte(new Decimal("1e6"))
 }
 
 
