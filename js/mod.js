@@ -12,11 +12,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "UNIVERSAL COLLAPSE",
+	num: "0.11",
+	name: "Universe is shifting...",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.11: Universe is shifting...</h3><br>
+	<h4>3/10/26</h4>
+		- Atoms are now unacessible until Universe Shift #1<br>
+		- There's still nothing yet in atoms tho (THE POWER OF YET)<br><br>
 	<h2>v0.1: UNIVERSAL COLLAPSE</h3><br>
 	<h4>3/10/26</h4>
 		- Implemented Universal Shift<br>
