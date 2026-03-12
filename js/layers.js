@@ -8,7 +8,7 @@ addLayer("US", {
         points: new Decimal(0)
     }},
     color: "#AA66AA",
-    requires: new Decimal(100), // Can be a function that takes requirement increases into account
+    requires: new Decimal(1000), // Can be a function that takes requirement increases into account
     resource: "Universal Shifts", // Name of prestige currency
     baseResource: "Quarks", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -16,7 +16,7 @@ addLayer("US", {
     canReset() {
     // Formula: 10^ (3 * (1.3**x + 1))
     let x = player[this.layer].points;
-    let cost = Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, x)).add(1)));
+    let cost = Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     return player.points.gte(cost)
     },
     
@@ -29,7 +29,7 @@ addLayer("US", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player[this.layer].points;
-    return Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, x)).add(1)));
+    return Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     },
 
     prestigeButtonText() {
@@ -112,6 +112,8 @@ addLayer("SA", {
         if (hasUpgrade('SA', 15)) mult = mult.times(2)
 
         if (hasUpgrade('A', 12)) mult = mult.times(2)
+
+        if (hasMilestone('US', 1)) mult = mult.times(1)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -238,7 +240,7 @@ addLayer("A", {
     description: "Quarks boost Quarks.",
     cost: new Decimal(4),
     effect() {
-        return player.points.add(1).pow(0.25)
+        return player.points.add(1).pow(0.1)
     },
     effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
     },
@@ -246,4 +248,70 @@ addLayer("A", {
     layerShown(){
         return hasMilestone("US", 0);
     },
+})
+
+addLayer("D", {
+    name: "DImensions", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    branches: ["US"],
+    color: "#FFFFFF",
+    requires: new Decimal(1000000), // Can be a function that takes requirement increases into account
+    resource: "Dimensions", // Name of prestige currency
+    baseResource: "Quarks", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    base: 10,
+    exponent: 1.65, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "d", description: "D: Reset for Dimensions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){
+        return hasMilestone("US", 2)
+    },
+
+    upgrades: {
+        11: {
+        title: "Dimneal sacifce",
+        description: "Dimensions boosts Quarks.",
+        cost: new Decimal(1),
+        effect() {
+        let base = new Decimal(2)
+        if (hasUpgrade("D", 12)) base = base.times(upgradeEffect("D", 12))
+        if (hasUpgrade("D", 13)) base = base.times(upgradeEffect("D", 13))
+            return base.pow(player[this.layer].points)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
+        },
+        12: {
+        title: "<- was literally just a booster",
+        description: "Quarks boost Dimneal sacifce",
+        cost: new Decimal(2),
+        effect() {
+            return player.points.add(1).pow(0.02)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
+        },
+        13: {
+        title: "Is this really the gimmick?",
+        description: "Subatomic Particles boost Dimneal sacifce",
+        cost: new Decimal(4),
+        effect() {
+            return player.SA.points.add(1).pow(0.03)
+        },
+        effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
+        }
+    }
 })

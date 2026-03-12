@@ -12,11 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.11.1",
-	name: "Post-Scaling I",
+	num: "0.12",
+	name: "Dimensional Boost???",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.12: Dimensional Boost???</h3><br>
+	<h4>3/12/26</h4>
+		- Added Dimensions, unlocked at Universal Shift #3.<br>
+		- Added 2 Universal Shift Milestones.<br>
+		- Universal Shift scaling is faster.<br><br>
 	<h3>v0.11.1: Post-Scaling I</h3><br>
 	<h4>3/11/26</h4>
 		- Added 3 SA upgrades, and 3 A upgrades.<br>
@@ -77,7 +82,10 @@ function getPointGen() {
 	if (hasUpgrade('A', 12)) gain = gain.times(2)
 	if (hasUpgrade('A', 13)) gain = gain.times(upgradeEffect('A', 13))
 
+	if (hasUpgrade('D', 11)) gain = gain.times(upgradeEffect('D', 11))
+
 	if (hasMilestone('US', 0)) gain = gain.times(2.5)
+	if (hasMilestone('US', 1)) gain = gain.times(3)
 	return gain
 }
 
@@ -91,10 +99,8 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("7,942,282"))
+	return player.points.gte(new Decimal("1e30"))
 }
-
-
 
 // Less important things beyond this point!
 
