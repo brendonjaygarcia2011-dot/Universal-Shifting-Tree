@@ -16,7 +16,7 @@ addLayer("US", {
     canReset() {
     // Formula: 10^ (3 * (1.3**x + 1))
     let x = player[this.layer].points;
-    let cost = Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
+    let cost = Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     return player.points.gte(cost)
     },
     
@@ -29,7 +29,7 @@ addLayer("US", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player[this.layer].points;
-    return Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
+    return Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     },
 
     prestigeButtonText() {
