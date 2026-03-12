@@ -43,7 +43,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Subatomic Particles.<br>
 		- MY BRAIN IS ALREADY DEAD.`
 
-let winText = `This game is very short sowwy :( Anyways, good job you beat my game.`
+let winText = `this game is shirt sowwy :( Anyways, try out the Leaf Growth Prestige Tree!<br>
+i sometimes update in school or home`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -77,6 +78,7 @@ function getPointGen() {
 	if (hasUpgrade('A', 13)) gain = gain.times(upgradeEffect('A', 13))
 
 	if (hasMilestone('US', 0)) gain = gain.times(2.5)
+	if (hasMilestone('US', 1)) gain = gain.times(3)
 	return gain
 }
 
@@ -90,7 +92,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("7,942,282"))
+	return player.points.gte(new Decimal("1.33e13"))
 }
 
 
