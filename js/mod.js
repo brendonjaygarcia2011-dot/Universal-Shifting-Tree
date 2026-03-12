@@ -12,11 +12,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.11",
-	name: "Universe is shifting...",
+	num: "0.11.1",
+	name: "Post-Scaling I",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.11.1: Post-Scaling I</h3><br>
+	<h4>3/11/26</h4>
+		- Added 3 SA upgrades, and 3 A upgrades.<br>
+		- Universal Shift is now 1 Million Quarks, sorry for the inconvience :(<br><br>
 	<h3>v0.11: Universe is shifting...</h3><br>
 	<h4>3/10/26</h4>
 		- Atoms are now unacessible until Universe Shift #1<br>
@@ -56,7 +60,7 @@ function canGenPoints(){
 
 // Calculate points/sec!
 function getPointGen() {
-	if(!canGenPoints())
+	if (!canGenPoints())
 		return new Decimal(0)
 
 	let gain = new Decimal(0)
@@ -64,6 +68,15 @@ function getPointGen() {
 	if (hasUpgrade('SA', 12)) gain = gain.times(3)
 	if (hasUpgrade('SA', 13)) gain = gain.times(upgradeEffect('SA', 13))
 	if (hasUpgrade('SA', 14)) gain = gain.times(upgradeEffect('SA', 14))
+	if (hasUpgrade('SA', 21)) gain = gain.pow(1.1)
+	if (hasUpgrade('SA', 22)) gain = gain.times(3)
+	if (hasUpgrade('SA', 23)) gain = gain.times(7)
+
+	if (hasUpgrade('A', 11)) gain = gain.times(3)
+	if (hasUpgrade('A', 12)) gain = gain.times(2)
+	if (hasUpgrade('A', 13)) gain = gain.times(upgradeEffect('A', 13))
+
+	if (hasMilestone('US', 0)) gain = gain.times(2.5)
 	return gain
 }
 
@@ -77,7 +90,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("1e6"))
+	return player.points.gte(new Decimal("7,942,282"))
 }
 
 
