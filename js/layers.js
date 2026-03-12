@@ -16,10 +16,10 @@ addLayer("US", {
     canReset() {
     // Formula: 10^ (3 * (1.3**x + 1))
     let x = player[this.layer].points;
-    let cost = Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.3, x).add(1)));
-    return player.points.gte(cost);
+    let cost = Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, x)).add(1)));
+    return player.points.gte(cost)
     },
-
+    
     getResetGain() {
     // For "static" style (one point at a time)
     if (!this.canReset()) return new Decimal(0);
@@ -29,12 +29,13 @@ addLayer("US", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player[this.layer].points;
-    return Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.3, x).add(1)));
+    return Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, x)).add(1)));
     },
 
     prestigeButtonText() {
     return "Reset for 1 UNIVERSAL SHIFT<br>Next at:<br> " + format(this.getNextAt()) + " Quarks.";
     },
+    
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -69,6 +70,20 @@ addLayer("US", {
             effectDescription: "Unlocks Atoms, and *2.5 Quarks.",
             done() {
                 return player.US.points.gte(1) // The condition to earn it
+            },
+        },
+        1: {
+            requirementDescription: "Universal Shift #2",
+            effectDescription: "*3 Quarks, and *2 Subatomic Particles",
+            done() {
+                return player.US.points.gte(2) // The condition to earn it
+            },
+        },
+        2: {
+            requirementDescription: "Universal Shift #3",
+            effectDescription: "Unlock Dimensions, an exponentially growing layer.",
+            done() {
+                return player.US.points.gte(3) // The condition to earn it
             },
         },
     },
@@ -209,23 +224,23 @@ addLayer("A", {
     ],
     upgrades: {
     11: {
-            title: "YIPPE ATOMIC ATOMS",
-            description: "*3 Quarks, and *1 Subatomic Particles.",
-            cost: new Decimal(1),
+    title: "YIPPE ATOMIC ATOMS",
+    description: "*3 Quarks, and *1 Subatomic Particles.",
+    cost: new Decimal(1),
     },
     12: {
-            title: "Atoms can't split, it causes a bomb!",
-            description: "*2 Quarks and Subatomic Particles.",
-            cost: new Decimal(2),
+    title: "Atoms can't split, it causes a bomb!",
+    description: "*2 Quarks and Subatomic Particles.",
+    cost: new Decimal(2),
     },
     13: {
-            title: "these upgrades are so weak",
-            description: "Quarks boost Quarks.",
-            cost: new Decimal(4),
-            effect() {
-                return player.points.add(1).pow(0.25)
-            },
-            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+    title: "these upgrades are so weak",
+    description: "Quarks boost Quarks.",
+    cost: new Decimal(4),
+    effect() {
+        return player.points.add(1).pow(0.25)
+    },
+    effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
     },
     },
     layerShown(){

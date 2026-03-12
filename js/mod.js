@@ -35,7 +35,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h4>3/7/26</h4>
 		- Changed Subatomic Particles to Quarks (i'll add explanations later)<br>
 		- Changed Atoms to Subatomic Particles (reasonable)<br><br>
-	<h3>v0.01.1</h3><br>
+	<h3>v0.01.1: Atoms</h3><br>
 	<h4>3/7/26</h4>
 		- Added Atoms<br><br>
 	<h3>v0.01: The atoms align.</h3><br>
@@ -43,7 +43,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Subatomic Particles.<br>
 		- MY BRAIN IS ALREADY DEAD.`
 
-let winText = `This game is very short sowwy :( Anyways, good job you beat my game.`
+let winText = `this game is shirt sowwy :( Anyways, try out the Leaf Growth Prestige Tree!<br>
+i sometimes update in school or home`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
