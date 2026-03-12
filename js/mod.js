@@ -12,11 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.11.1",
-	name: "Post-Scaling I",
+	num: "0.11.2",
+	name: "Post-Scaling II",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.11.2: Post-Scaling II</h3><br>
+	<h4>3/11/26</h4>
+		- Universal Shift is now slightly easier early on and way harder later on.<br><br>
 	<h3>v0.11.1: Post-Scaling I</h3><br>
 	<h4>3/11/26</h4>
 		- Added 3 SA upgrades, and 3 A upgrades.<br>
@@ -35,7 +38,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h4>3/7/26</h4>
 		- Changed Subatomic Particles to Quarks (i'll add explanations later)<br>
 		- Changed Atoms to Subatomic Particles (reasonable)<br><br>
-	<h3>v0.01.1</h3><br>
+	<h3>v0.01.1: Atoms</h3><br>
 	<h4>3/7/26</h4>
 		- Added Atoms<br><br>
 	<h3>v0.01: The atoms align.</h3><br>
