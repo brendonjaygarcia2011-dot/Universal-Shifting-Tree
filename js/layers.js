@@ -51,6 +51,7 @@ addLayer("US", {
     // This wipes the higher layers when you prestige US
     if (player.SA) layerDataReset("SA");
     if (player.A) layerDataReset("A");
+    if (player.D) layerDataReset("D");
     
     // This resets the main points at the very top
     setTimeout(() => {
@@ -63,6 +64,8 @@ addLayer("US", {
     if (layers[resettingLayer].row > this.row) {
         layerDataReset(this.layer, keep);
     }
+    },
+    layerShown(){return true
     },
     milestones: {
         0: {
@@ -86,9 +89,36 @@ addLayer("US", {
                 return player.US.points.gte(3) // The condition to earn it
             },
         },
+        3: {
+            requirementDescription: "Universal Shift #4",
+            effectDescription: "You can easily beat this, *2 Quarks.",
+            done() {
+                return player.US.points.gte(4) // The condition to earn it
+            },
+        },
+        4: {
+            requirementDescription: "Universal Shift #5",
+            effectDescription: "Unlock a Dimension upgrade.",
+            done() {
+                return player.US.points.gte(5) // The condition to earn it
+            },
+        },
     },
-    layerShown(){return true
+    microtabs: {
+    tabs: { // 'stuff' is the ID for this microtab group
+        "Milestones": {
+            content: ["milestones"]
+        },
     }
+    },
+    tabFormat: [
+    "main-display",
+    "prestige-button",
+    "resource-display",
+    "blank",
+    ["microtabs", "tabs", { "border": "none" }], // This displays the 'stuff' group defined above
+    ],
+
 })
 
 addLayer("SA", {
@@ -234,6 +264,7 @@ addLayer("A", {
     title: "Atoms can't split, it causes a bomb!",
     description: "*2 Quarks and Subatomic Particles.",
     cost: new Decimal(2),
+    unlocked() {return hasUpgrade('A', 11)},
     },
     13: {
     title: "these upgrades are so weak",
@@ -243,6 +274,7 @@ addLayer("A", {
         return player.points.add(1).pow(0.1)
     },
     effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+    unlocked() {return hasUpgrade('A', 12)},
     },
     },
     layerShown(){
@@ -264,9 +296,29 @@ addLayer("D", {
     resource: "Dimensions", // Name of prestige currency
     baseResource: "Quarks", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
-    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    base: 10,
-    exponent: 1.65, // Prestige currency exponent
+    type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    canReset() {
+    // Formula: 10^ (3 * (1.3**x + 1))
+    let x = player["D"].points;
+    let cost = Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.5, x)))
+    return player.points.gte(cost)
+    },
+    
+    getResetGain() {
+    // For "static" style (one point at a time)
+    if (!this.canReset()) return new Decimal(0);
+    return new Decimal(1);
+    },
+
+    getNextAt() {
+    // This shows the requirement for the next prestige level in the UI
+    let x = player["D"].points;
+    return Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.5, x)))
+    },
+
+    prestigeButtonText() {
+    return "Reset for a dimensions<br>Next at:<br> " + format(this.getNextAt()) + " Quarks.";
+    },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -281,7 +333,6 @@ addLayer("D", {
     layerShown(){
         return hasMilestone("US", 2)
     },
-
     upgrades: {
         11: {
         title: "Dimneal sacifce",
@@ -303,6 +354,7 @@ addLayer("D", {
             return player.points.add(1).pow(0.02)
         },
         effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
+        unlocked() {return hasMilestone('US', 3) && hasUpgrade('D', 11)}
         },
         13: {
         title: "Is this really the gimmick?",
