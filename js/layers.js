@@ -35,7 +35,7 @@ addLayer("US", {
     prestigeButtonText() {
     return "Reset for 1 UNIVERSAL SHIFT<br>Next at:<br> " + format(this.getNextAt()) + " Quarks.";
     },
-    
+
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -103,6 +103,41 @@ addLayer("US", {
                 return player.US.points.gte(5) // The condition to earn it
             },
         },
+        5: {
+            requirementDescription: "Universal Shift #6",
+            effectDescription: "Fun Fact: the price will tetrationally grow!<br>Anyways, *5 Quarks.",
+            done() {
+                return player.US.points.gte(6) // The condition to earn it
+            },
+        },
+        6: {
+            requirementDescription: "Universal Shift #7",
+            effectDescription: "Unlock another Dimensions upgrade, and *2 Subatomic Particles.",
+            done() {
+                return player.US.points.gte(7) // The condition to earn it
+            },
+        },
+        7: {
+            requirementDescription: "Universal Shift #8",
+            effectDescription: "Unlock more Atoms upgrades. OMG ATOMS IS FINALLY USEFUL?",
+            done() {
+                return player.US.points.gte(8) // The condition to earn it
+            },
+        },
+        8: {
+            requirementDescription: "Universal Shift #9",
+            effectDescription: "You can't easily beat this, *10 Quarks.",
+            done() {
+                return player.US.points.gte(9) // The condition to earn it
+            },
+        },
+        9: {
+            requirementDescription: "Universal Shift #10",
+            effectDescription: "Unlock Compounds, and Big Bang. But first, gain %1 of Subatomic Particles.",
+            done() {
+                return player.US.points.gte(10) // The condition to earn it
+            },
+        },
     },
     microtabs: {
     tabs: { // 'stuff' is the ID for this microtab group
@@ -137,18 +172,27 @@ addLayer("SA", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
+    passiveGeneration() {
+    let passive = new Decimal(0);
+    if (hasMilestone('US', 9)) passive = passive.add(0.01); 
+    return passive;
+    },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade('SA', 15)) mult = mult.times(2)
-        if (hasUpgrade('SA', 24)) mult = mult.times(upgradeEffect('SA', 24))
 
         if (hasUpgrade('A', 12)) mult = mult.times(2)
+        if (hasUpgrade('A', 21)) mult = mult.times(upgradeEffect('A', 21))
+        if (hasUpgrade('A', 22)) mult = mult.times(5)
 
-        if (hasMilestone('US', 1)) mult = mult.times(1)
+        if (hasMilestone('US', 1)) mult = mult.times(2)
+        if (hasMilestone('US', 6)) mult = mult.times(2)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        exp = new Decimal(1)
+        if (hasUpgrade('A', 23)) exp = exp.add(0.1)
+        return exp
     },
     onPrestige(gain) {
     // Wait for the engine to finish, then strike it down to 0
@@ -215,13 +259,13 @@ addLayer("SA", {
         },
          23: {
             title: "Up Quarks and Down Quarks and the 5 other types",
-            description: "*7 Quarks Gain",
+            description: "*7 Quarks Gain.",
             cost: new Decimal(1000),
             unlocked() { return hasUpgrade('SA', 22) }, 
         },
          24: {
             title: "i honestly don't know what to put here",
-            description: "Quarks boost Quarks and Subatomic Particles",
+            description: "Quarks boost Quarks.",
             cost: new Decimal(10000),
             effect() {
                 return player.points.add(1).pow(0.1)
@@ -287,7 +331,29 @@ addLayer("A", {
     effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
     unlocked() {return hasUpgrade('A', 12)},
     },
+    21: {
+    title: "Who's here after Universal Shift #8?",
+    description: "Atoms boost Quarks and Subatomic Particles.",
+    cost: new Decimal(20000),
+    effect() {
+        return player.A.points.add(1).pow(0.2)
     },
+    effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+    unlocked() {return hasMilestone('US', 7) && hasUpgrade('A', 13)},
+    },
+    22: {
+    title: "Who's here after Universal Shift #9?",
+    description: "*10 Quarks and *5 Subatomic Particles",
+    cost: new Decimal(20000000),
+    unlocked() {return hasMilestone('US', 7) && hasUpgrade('A', 21)},
+    },
+    23: {
+    title: "Who's here after Universal Shif wait i used this already",
+    description: "Raise Subatomic Particle gain by 0.1.",
+    cost: new Decimal(1e11),
+    unlocked() {return hasMilestone('US', 7) && hasUpgrade('A', 22)},
+    },
+},
     layerShown(){
         return hasMilestone("US", 0);
     },
@@ -311,7 +377,7 @@ addLayer("D", {
     canReset() {
     // Formula: 10^ (3 * (1.3**x + 1))
     let x = player["D"].points;
-    let cost = Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.5, x)))
+    let cost = Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.75, x)))
     return player.points.gte(cost)
     },
     
@@ -324,7 +390,7 @@ addLayer("D", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player["D"].points;
-    return Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.5, x)))
+    return Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.75, x)))
     },
 
     prestigeButtonText() {
@@ -362,19 +428,80 @@ addLayer("D", {
         description: "Quarks boost Dimneal sacifce",
         cost: new Decimal(2),
         effect() {
-            return player.points.add(1).pow(0.02)
+            return player.points.log(10).div(2).add(1)
         },
         effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
-        unlocked() {return hasMilestone('US', 3) && hasUpgrade('D', 11)}
+        unlocked() {return hasMilestone('US', 4) && hasUpgrade('D', 11)}
         },
         13: {
         title: "Is this really the gimmick?",
         description: "Subatomic Particles boost Dimneal sacifce",
         cost: new Decimal(4),
         effect() {
-            return player.SA.points.add(1).pow(0.03)
+            return player.SA.points.log(10).div(2).add(1)
         },
         effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
+        unlocked() {return hasMilestone('US', 6) && hasUpgrade('D', 12)},
         }
     }
+})
+
+addLayer("M", {
+    name: "Molecules", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "M", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    branches: ["A"],
+    color: "#267603",
+    requires: new Decimal(1e25), // Can be a function that takes requirement increases into account
+    resource: "Molecules", // Name of prestige currency
+    baseResource: "Atoms", // Name of resource prestige is based on
+    baseAmount() {return player.A.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.25, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 3, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "m", description: "M: Reset for Molecules", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown() {return hasMilestone('US', 9)}
+})
+
+addLayer("BB", {
+    name: "Big Bang", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "BB", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    branches: ["SA", "D"],
+    color: "#595959",
+    requires: new Decimal(1e85), // Can be a function that takes requirement increases into account
+    resource: "Big Bang", // Name of prestige currency
+    baseResource: "Subatomic Particles", // Name of resource prestige is based on
+    baseAmount() {return player.SA.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.20, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "b", description: "B: Reset for Big Bangs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown() {return hasMilestone('US', 9)}
 })
