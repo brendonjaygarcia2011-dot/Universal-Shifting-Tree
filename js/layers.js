@@ -16,7 +16,7 @@ addLayer("US", {
     canReset() {
     // Formula: 10^ (3 * (1.3**x + 1))
     let x = player[this.layer].points;
-    let cost = Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
+    let cost = Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     return player.points.gte(cost)
     },
     
@@ -29,7 +29,7 @@ addLayer("US", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player[this.layer].points;
-    return Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
+    return Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     },
 
     prestigeButtonText() {
@@ -140,6 +140,7 @@ addLayer("SA", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade('SA', 15)) mult = mult.times(2)
+        if (hasUpgrade('SA', 24)) mult = mult.times(upgradeEffect('SA', 24))
 
         if (hasUpgrade('A', 12)) mult = mult.times(2)
 
@@ -217,6 +218,16 @@ addLayer("SA", {
             description: "*7 Quarks Gain",
             cost: new Decimal(1000),
             unlocked() { return hasUpgrade('SA', 22) }, 
+        },
+         24: {
+            title: "i honestly don't know what to put here",
+            description: "Quarks boost Quarks and Subatomic Particles",
+            cost: new Decimal(10000),
+            effect() {
+                return player.points.add(1).pow(0.1)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+            unlocked() { return hasUpgrade('SA', 23) }, 
         },
     },
     infoboxes: {
