@@ -12,19 +12,37 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.12",
-	name: "Dimensional Boost???",
+	num: "0.2",
+	name: "MOLECULE BY MOLECULE",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h2>v0.2: MOLECULE BY MOLECULE</h2><br>
+	<h4>3/16/26</h4>
+		- Added AND Implemented Molecules (new main layer) AND Big Bangs (automation)<br>
+		- Added Universal Shift #11<br>
+		- Added the thing where when you buy a milestone the next one appears<br>
+		- Added 5 more Dimension upgrades<br>
+		- Added 5 more Subatomic Particle upgrades<br>
+		- Added some periods<br>
+		- Fixed the NaN bug in the Dimensions layer<br>
+		- ENDGAME: 1e1300 Quarks<br>
+		- only reason why this took so long is because i hate balancing but i had to<br><br>
+	<h3>v0.13: locked in in 1st period</h3><br>
+	<h4>3/13/26</h4>
+		- Added Universal Shifts #4 - #10.<br>
+		- Added the thing where when you buy an upgrade the next one appears<br>
+		- Dimensions cost has changed, and added 2 more Dimension upgrades<br>
+		- Added 3 more Atoms upgrades, so atoms is finally worth getting<br>
+		- ENDGAME: 1e140 Quarks<br><br>
 	<h3>v0.12: Dimensional Boost???</h3><br>
 	<h4>3/12/26</h4>
-		- Added Dimensions, unlocked at Universal Shift #3.<br>
-		- Added 2 Universal Shift Milestones.<br>
-		- Universal Shift scaling is faster.<br><br>
+		- Added Dimensions, unlocked at Universal Shift #3<br>
+		- Added 2 Universal Shift Milestones<br>
+		- Universal Shift scaling is faster<br><br>
 	<h3>v0.11.1: Post-Scaling I</h3><br>
 	<h4>3/11/26</h4>
-		- Added 3 SA upgrades, and 3 A upgrades.<br>
+		- Added 3 SA upgrades, and 3 A upgrades<br>
 		- Universal Shift is now 1 Million Quarks, sorry for the inconvience :(<br><br>
 	<h3>v0.11: Universe is shifting...</h3><br>
 	<h4>3/10/26</h4>
@@ -45,8 +63,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Atoms<br><br>
 	<h3>v0.01: The atoms align.</h3><br>
 	<h4>3/6/26</h4>
-		- Added Subatomic Particles.<br>
-		- MY BRAIN IS ALREADY DEAD.`
+		- Added Subatomic Particles<br>
+		- MY BRAIN IS ALREADY DEAD`
 
 let winText = `this game is shirt sowwy :( Anyways, try out the Leaf Growth Prestige Tree!<br>
 i sometimes update in school or home`
@@ -76,8 +94,11 @@ function getPointGen() {
 	if (hasUpgrade('SA', 14)) gain = gain.times(upgradeEffect('SA', 14))
 	if (hasUpgrade('SA', 21)) gain = gain.pow(1.1)
 	if (hasUpgrade('SA', 22)) gain = gain.times(3)
-	if (hasUpgrade('SA', 23)) gain = gain.times(7)
-	if (hasUpgrade('SA', 24)) gain = gain.times(upgradeEffect('SA', 24))
+	if (hasUpgrade('SA', 24)) gain = gain.times(7)
+	if (hasUpgrade('SA', 25)) gain = gain.times(upgradeEffect('SA', 25))
+	if (hasUpgrade('SA', 31)) gain = gain.times(upgradeEffect('SA', 31))
+	if (hasUpgrade('SA', 33)) gain = gain.times(upgradeEffect('SA', 33))
+	if (hasUpgrade('SA', 34)) gain = gain.times(upgradeEffect('SA', 34))
 
 	if (hasUpgrade('A', 11)) gain = gain.times(3)
 	if (hasUpgrade('A', 12)) gain = gain.times(2)
@@ -86,6 +107,9 @@ function getPointGen() {
 	if (hasUpgrade('A', 22)) gain = gain.times(10)
 
 	if (hasUpgrade('D', 11)) gain = gain.times(upgradeEffect('D', 11))
+
+	if (hasUpgrade('M', 11)) gain = gain.times(upgradeEffect('M', 11))
+	if (hasUpgrade('M', 12)) gain = gain.times(upgradeEffect('M', 12))
 
 	if (hasMilestone('US', 0)) gain = gain.times(2.5)
 	if (hasMilestone('US', 1)) gain = gain.times(3)
@@ -105,7 +129,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("1e30"))
+	return player.points.gte(new Decimal("1e1300"))
 }
 
 // Less important things beyond this point!
