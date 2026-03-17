@@ -40,11 +40,11 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added Dimensions, unlocked at Universal Shift #3<br>
 		- Added 2 Universal Shift Milestones<br>
 		- Universal Shift scaling is faster<br><br>
-	<h3>v0.11.1: Post-Scaling I</h3><br>
+	<h3>v0.11: Universe is shifting...</h3><br>
 	<h4>3/11/26</h4>
 		- Added 3 SA upgrades, and 3 A upgrades<br>
 		- Universal Shift is now 1 Million Quarks, sorry for the inconvience :(<br><br>
-	<h3>v0.11: Universe is shifting...</h3><br>
+	<h3>v0.10.1: Post-Scaling I</h3><br>
 	<h4>3/10/26</h4>
 		- Atoms are now unacessible until Universe Shift #1<br>
 		- There's still nothing yet in atoms tho (THE POWER OF YET)<br><br>

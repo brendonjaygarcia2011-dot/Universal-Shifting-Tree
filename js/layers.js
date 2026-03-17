@@ -14,20 +14,17 @@ addLayer("US", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     canReset() {
-    // Formula: 10^ (3 * (1.3**x + 1))
     let x = player[this.layer].points;
     let cost = Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     return player.points.gte(cost)
     },
     
     getResetGain() {
-    // For "static" style (one point at a time)
     if (!this.canReset()) return new Decimal(0);
     return new Decimal(1);
     },
 
     getNextAt() {
-    // This shows the requirement for the next prestige level in the UI
     let x = player[this.layer].points;
     return Decimal.eq(x, 0) ? new Decimal(1e6) : Decimal.mul(1000, Decimal.pow(10, Decimal.mul(3, Decimal.pow(1.35, Decimal.pow(1.35, Decimal.sub(x, 1))))));
     },
@@ -48,20 +45,17 @@ addLayer("US", {
         {key: "u", description: "U: Reset for Universal Shift", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     onPrestige(gain) {
-    // This wipes the higher layers when you prestige US
     if (player.SA) layerDataReset("SA");
     if (player.A) layerDataReset("A");
     if (player.D) layerDataReset("D");
     if (player.D) layerDataReset("M");
     if (player.D) layerDataReset("BB");
     
-    // This resets the main points at the very top
     setTimeout(() => {
         player.points = new Decimal(10);
     }, 0)
     },
     doReset(resettingLayer) {
-    // This PREVENTS US from resetting when SA or A resets
     let keep = ["points", "upgrades", "milestones", "buyables"];
     if (layers[resettingLayer].row > this.row) {
         layerDataReset(this.layer, keep);
@@ -163,7 +157,18 @@ addLayer("US", {
         "Milestones": {
             content: ["milestones"]
         },
-    }
+        "Info": {
+            content: [
+                ["column", [
+            ["infobox", "quarks"]
+        ]]]
+        },
+    }},
+    infoboxes: {
+        quarks: {
+            title: "Quarks",
+            body() { return "Quarks are possibly (might be preons but those are hypothetical) the smallest thing. There are 6 types: Up Quarks, Down Quarks, Charm Quarks, Strange Quarks, Top Quarks, and Bottom Quarks. Up Quarks and Down Quarks are most important, because they make protons and neutrons." },
+        },
     },
     tabFormat: [
     "main-display",
@@ -221,7 +226,6 @@ addLayer("SA", {
         return exp
     },
     onPrestige(gain) {
-    // Wait for the engine to finish, then strike it down to 0
     setTimeout(() => {
         player.points = new Decimal(0);
     }, 0);
@@ -346,11 +350,42 @@ addLayer("SA", {
             unlocked() { return hasUpgrade('SA', 33) && hasMilestone('BB', 1)}, 
         },
     },
-    infoboxes: {
-        lore: {
-            title: "Hello there.",
-            body() { return "Hi! This is my upgrade tree that i'm finally making, the only reason is because i'm a nerd and want to play and make things. Anyways, i beat the Prestige Tree today, and in science, the unit is Atoms and other things, so yea.  Now, about Subatomic Particles. Subatomic Particles are made up from quarks (except electrons), so the quarks combine to make more subatomic particles." },
+    microtabs: {
+    tabs2: { // 'stuff' is the ID for this microtab group
+        "Upgrades": {
+            content: ["upgrades"]
+        },
+        "Info": {
+            content: [
+                ["column", [
+            ["infobox", "subatomic_particles"],
+            ["infobox", "leptons"]
+        ]]
+    ]
+        }
+    }
     },
+    tabFormat: [
+    ["infobox", "start"],
+    "main-display",
+    "prestige-button",
+    "resource-display",
+    "blank",
+    ["microtabs", "tabs2", { "border": "none" }], // This displays the 'stuff' group defined above
+    ],
+    infoboxes: {
+        start: {
+            title: "REED ME",
+            body() { return "Hi! This is my upgrade tree that i'm finally making, the only reason is because i'm a nerd and want to play and make things. Anyways, i beat the Prestige Tree today, and in science, the unit is Atoms and other things, so yea." },
+        },
+        subatomic_particles: {
+            title: "Subatomic Particles",
+            body() { return "Subatomic Particles are made up from quarks (except electrons), so the quarks combine to make more subatomic particles. There are 3 types: Protons, Neutrons, and Electrons. Protons are made from 2 Up Quarks and 1 Down Quark, and Neutrons are made from 1 Up Quark and 2 Down Quarks. Electrons aren't made of any Quarks; they are Leptons, which are Elementary Particles (can not be divided into smaller particles).<br><br>The charges of each Subatomic Particle is shown below:<br>- Protons; Positively charged<br>- Neutrons; No charge<br>- Electrons; Negatively charged<br><br>There are actually a lot more Subatomic Particles, but the information will be unlocked later in this incremental game. Also, please note that I am not a total nerd in science so expect some mistakes; I just learned these information." },
+        },
+        leptons: {
+            title: "Leptons",
+            body() { return "Leptons are the other type of " },
+        },
     }
 })
 
@@ -447,14 +482,10 @@ addLayer("D", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     canReset() {
-    // THIS IS THE FIX:
-    // It checks if your current points are greater than or equal to 
-    // the EXACT value returned by getNextAt() above.
     return player.points.gte(this.getNextAt());
     },
     
     getResetGain() {
-    // For "static" style (one point at a time)
     if (!this.canReset()) return new Decimal(0);
     return new Decimal(1);
     },
@@ -601,9 +632,6 @@ addLayer("BB", {
 
     getResetGain() {
     if (player.points.lt("1e130")) return new Decimal(0);
-    
-    // Formula: log1.8( (log10(points) - 130) / 6 )
-    // We use .plus(0.0000000001) to account for floating point errors (drift)
     let gain = Decimal.log(player.points.log10().minus(119.2).div(6), 1.8).plus(0.0000000001).floor();
 
     if (gain.lte(player[this.layer].points)) return new Decimal(0);
@@ -611,16 +639,11 @@ addLayer("BB", {
     },
 
     getNextAt(canMax) {
-    // Current points + gain + 1 to find the absolute NEXT cost
     let x = player[this.layer].points.add(tmp[this.layer].getResetGain).add(1);
-    
-    // Inverse: 10^( (1.8^x * 6) + 130 )
-    // This is the EXACT inverse of the gain formula above
     return Decimal.pow(10, Decimal.pow(1.8, x).mul(6).add(119.2));
     },
 
     canReset() {
-    // Check if we can gain at least 1 point
     return tmp[this.layer].getResetGain.gte(1);
     },
 
@@ -767,3 +790,43 @@ addLayer("M", {
     },
     layerShown() {return hasMilestone('US', 10)}
 })
+
+addLayer("a_layer", { // "a_layer" is the internal ID
+    name: "Achievements", 
+    symbol: "★", 
+    color: "#F5754E",
+    row: "side", // This is what moves it to the sidebar
+    position: 0,
+    startData() { return {
+        unlocked: true,
+        points: new Decimal(0),
+    }},
+    tooltip: "Achievements",
+    // This format displays the count/percentage and the achievement grid
+    tabFormat: [
+        ["display-text", () => {
+            let completed = Object.keys(player.a_layer.achievements).length;
+            return `You have ${completed}/34 achievements (${format(new Decimal(completed).div(34).mul(100))}%)<br><br>`;
+        }],
+        "achievements"
+    ],
+    layerShown() { return true },
+    achievements: {
+        11: {
+            name: "Universalized",
+            done() { return player.US.points.gte(1) },
+            tooltip: "Perform your first Universal Shift.",
+        },
+        12: {
+            name: "Subatomic",
+            done() { return player.SA.points.gte(1) },
+            tooltip: "Gain a Subatomic Particle.",
+        },
+        13: {
+            name: "Subatomic",
+            done() { return player.SA.points.gte(1e62) },
+            tooltip: "Gain a Subatomic Particle.",
+        },
+        // Continue adding your 13, 14, 21, etc. here
+    },
+});
