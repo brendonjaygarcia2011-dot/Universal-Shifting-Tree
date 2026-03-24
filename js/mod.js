@@ -12,11 +12,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "MOLECULE BY MOLECULE",
+	num: "0.20.1",
+	name: "locked in in mathcounts state",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.20.1: locked in in mathcounts state</h3><br>
+	<h4>3/21/26</h4>
+		- Balanced the game, because a good amount of people said to balance it, ty for your finds!<br>
+		- Added 2 EDUCATIONAL infoboxes: Quarks and Subatomic Particles (will finish in v0.20.2)<br>
+		- Added 1 info infobox: READ ME 2, for people to know what Universal Shift does<br>
+		- Was on my little Spring Break hiatus, and i got 89th out of 220 kids in mathcounts state! yay for me<br>
+		- btw i got 60 places higher than my friend so take that reedthereed get better at math (inside joke you wouldn't get it)<br><br>
 	<h2>v0.2: MOLECULE BY MOLECULE</h2><br>
 	<h4>3/16/26</h4>
 		- Added AND Implemented Molecules (new main layer) AND Big Bangs (automation)<br>
@@ -100,8 +107,8 @@ function getPointGen() {
 	if (hasUpgrade('SA', 33)) gain = gain.times(upgradeEffect('SA', 33))
 	if (hasUpgrade('SA', 34)) gain = gain.times(upgradeEffect('SA', 34))
 
-	if (hasUpgrade('A', 11)) gain = gain.times(3)
-	if (hasUpgrade('A', 12)) gain = gain.times(2)
+	if (hasUpgrade('A', 11)) gain = gain.times(5)
+	if (hasUpgrade('A', 12)) gain = gain.times(3)
 	if (hasUpgrade('A', 13)) gain = gain.times(upgradeEffect('A', 13))
 	if (hasUpgrade('A', 21)) gain = gain.times(upgradeEffect('A', 21))
 	if (hasUpgrade('A', 22)) gain = gain.times(10)
@@ -113,8 +120,8 @@ function getPointGen() {
 
 	if (hasMilestone('US', 0)) gain = gain.times(2.5)
 	if (hasMilestone('US', 1)) gain = gain.times(3)
-	if (hasMilestone('US', 3)) gain = gain.times(2)
-	if (hasMilestone('US', 5)) gain = gain.times(5)
+	if (hasMilestone('US', 2)) gain = gain.times(2)
+	if (hasMilestone('US', 5)) gain = gain.times(2.5)
 	if (hasMilestone('US', 8)) gain = gain.times(10)
 	return gain
 }
