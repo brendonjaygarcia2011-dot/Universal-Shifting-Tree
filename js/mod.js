@@ -122,6 +122,7 @@ function getPointGen() {
 	if (hasMilestone('US', 0)) gain = gain.times(2.5)
 	if (hasMilestone('US', 1)) gain = gain.times(3)
 	if (hasMilestone('US', 2)) gain = gain.times(2)
+	if (hasMilestone('US', 3)) gain = gain.times(2.70)
 	if (hasMilestone('US', 5)) gain = gain.times(2.5)
 	if (hasMilestone('US', 8)) gain = gain.times(10)
 	return gain

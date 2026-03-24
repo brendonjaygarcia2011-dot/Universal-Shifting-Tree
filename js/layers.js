@@ -89,7 +89,7 @@ addLayer("US", {
         },
         3: {
             requirementDescription: "Universal Shift #4",
-            effectDescription: "Unlock Dimensions, an exponentially growing layer.",
+            effectDescription: "*1.01 ^ 100 Quarks (*2.70).",
             done() {
                 return player.US.points.gte(4) // The condition to earn it
             },
@@ -97,7 +97,7 @@ addLayer("US", {
         },
         4: {
             requirementDescription: "Universal Shift #5",
-            effectDescription: "Unlock a Dimension upgrade, and gain 1% of your possible Subatomic Particles per second.",
+            effectDescription: "Unlock Dimensions, an exponentially growing layer.",
             done() {
                 return player.US.points.gte(5) // The condition to earn it
             },
@@ -483,7 +483,7 @@ addLayer("D", {
         {key: "d", description: "D: Reset for Dimensions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){
-        return hasMilestone("US", 3)
+        return hasMilestone("US", 4)
     },
     upgrades: {
         11: {
