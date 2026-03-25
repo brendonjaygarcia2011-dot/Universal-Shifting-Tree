@@ -12,11 +12,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.20.1.1",
-	name: "locked in in mathcounts state",
+	num: "0.20.1.2",
+	name: "post-scaling III",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.20.1.2: post-scaling III</h3><br>
+	<h4>3/21/26</h4>
+		- Balanced the game AGAIN<br>
+		- Dimensions now start at 1e9 Quarks<br>
+		- Changed an upgrade to a milestone<br><br>
 	<h3>v0.20.1.1: locked in in mathcounts state</h3><br>
 	<h4>3/21/26</h4>
 		- Balanced the game, because a good amount of people said to balance it, ty for your finds!<br>
@@ -123,8 +128,9 @@ function getPointGen() {
 	if (hasMilestone('US', 1)) gain = gain.times(3)
 	if (hasMilestone('US', 2)) gain = gain.times(2)
 	if (hasMilestone('US', 3)) gain = gain.times(2.70)
-	if (hasMilestone('US', 5)) gain = gain.times(2.5)
+	if (hasMilestone('US', 5)) gain = gain.times(1.01)
 	if (hasMilestone('US', 8)) gain = gain.times(10)
+	if (hasMilestone('US', 9)) gain = gain.times(10)
 	return gain
 }
 

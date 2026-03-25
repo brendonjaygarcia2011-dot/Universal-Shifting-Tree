@@ -105,7 +105,7 @@ addLayer("US", {
         },
         5: {
             requirementDescription: "Universal Shift #6",
-            effectDescription: "Fun Fact: the price will tetrationally grow!<br>Anyways, *2.5 Quarks.",
+            effectDescription: "Fun Fact: the price will tetrationally grow!<br>Anyways, *1.01 Quarks (lol).",
             done() {
                 return player.US.points.gte(6) // The condition to earn it
             },
@@ -129,7 +129,7 @@ addLayer("US", {
         },
         8: {
             requirementDescription: "Universal Shift #9",
-            effectDescription: "You can't easily beat this, Unlock Atoms.",
+            effectDescription: "You can't easily beat this, Unlock Atoms, and *10 Quarks.",
             done() {
                 return player.US.points.gte(9) // The condition to earn it
             },
@@ -137,7 +137,7 @@ addLayer("US", {
         },
         9: {
             requirementDescription: "Universal Shift #10",
-            effectDescription: "Unlock Big Bang.",
+            effectDescription: "Unlock Big Bang, and *10 Quarks -> Subatomic Particles.",
             done() {
                 return player.US.points.gte(10) // The condition to earn it
             },
@@ -221,7 +221,7 @@ addLayer("SA", {
         let keep = [];
     
         if (layers[resettingLayer].row > this.row) {
-            if (hasUpgrade("BB", 14)) {
+            if (hasMilestone("BB", 1)) {
                 keep.push("upgrades");
                 keep.push("milestones");
                 keep.push("points");
@@ -244,6 +244,7 @@ addLayer("SA", {
 
         if (hasMilestone('US', 1)) mult = mult.times(2)
         if (hasMilestone('US', 6)) mult = mult.times(2)
+        if (hasMilestone('US', 9)) mult = mult.times(10)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -425,7 +426,7 @@ addLayer("D", {
     }},
     branches: ["US"],
     color: "#FFFFFF",
-    requires: new Decimal(1000000), // Can be a function that takes requirement increases into account
+    requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
     resource: "Dimensions", // Name of prestige currency
     baseResource: "Quarks", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -434,7 +435,7 @@ addLayer("D", {
         let keep = [];
     
         if (layers[resettingLayer].row > this.row) {
-            if (hasUpgrade("BB", 14)) {
+            if (hasMilestone("BB", 1)) {
                 keep.push("upgrades");
                 keep.push("milestones");
                 keep.push("points");
@@ -455,7 +456,7 @@ addLayer("D", {
     getNextAt() {
     // This shows the requirement for the next prestige level in the UI
     let x = player["D"].points;
-    let cost = Decimal.mul(1000, Decimal.pow(1000, Decimal.pow(1.7, x)))
+    let cost = Decimal.mul(1e6, Decimal.pow(1000, Decimal.pow(1.7, x)))
 
     // Apply the divisor here (e.g., divide by 2)
     let reduct = new Decimal(1)
@@ -517,7 +518,7 @@ addLayer("D", {
             return player.SA.points.max(1).log(10).div(2).add(1)
         },
         effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect 
-        unlocked() {return hasMilestone('US', 6) && hasUpgrade('D', 12)},
+        unlocked() {return hasMilestone('US', 7) && hasUpgrade('D', 12)},
         },
         14: {
         title: "yes it is",
@@ -626,7 +627,7 @@ addLayer("A", {
     unlocked() {return hasUpgrade('A', 12)},
     },
     21: {
-    title: "Who's here after Universal Shift #8?",
+    title: "Who's here after Universal Shift #9?",
     description: "Atoms boost Quarks and Subatomic Particles.",
     cost: new Decimal(20000),
     effect() {
@@ -636,7 +637,7 @@ addLayer("A", {
     unlocked() {return hasMilestone('US', 7) && hasUpgrade('A', 13)},
     },
     22: {
-    title: "Who's here after Universal Shift #9?",
+    title: "Who's here after Universal Shift #10?",
     description: "*10 Quarks and *5 Subatomic Particles.",
     cost: new Decimal(20000000),
     unlocked() {return hasMilestone('US', 7) && hasUpgrade('A', 21)},
@@ -755,12 +756,6 @@ addLayer("BB", {
             description: "+900% to your Subatomic Particle gain per second.",
             cost: new Decimal(3),
             unlocked() {return hasUpgrade('BB', 12)}
-        },
-        14: {
-            title: "ahh the fresh air of non-reseting resets",
-            description: "Subatomic Particles no longer reset on Row 2 resets.",
-            cost: new Decimal(5),
-            unlocked() {return hasUpgrade('BB', 13)}
         },
     },
     microtabs: {
