@@ -18,7 +18,7 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.20.1.2: post-scaling III</h3><br>
-	<h4>3/21/26</h4>
+	<h4>3/25/26</h4>
 		- Balanced the game AGAIN<br>
 		- Dimensions now start at 1e9 Quarks<br>
 		- Changed an upgrade to a milestone<br><br>
