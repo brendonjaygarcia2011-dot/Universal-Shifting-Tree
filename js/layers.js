@@ -411,7 +411,7 @@ addLayer("SA", {
         },
         leptons: {
             title: "Leptons",
-            body() { return "Leptons are the other type of " },
+            body() { return "Leptons are the other type of Elementary Particles. There are 6 types: Electrons, Muons, Taus, and their negative versions. As you can see, Electrons are not made of quarks, but is a Lepton.<br><br>Now, what are Leptons used for?" },
         },
     }
 })
